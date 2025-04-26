@@ -1,0 +1,22 @@
+
+term = "xterm-256color"
+
+# theme = rose-pine
+
+# Background settings
+background = "#141414"
+background-opacity = 0.8
+background-blur = true
+
+# Foreground color
+foreground = "#d8d8d8"
+
+# Font settings
+font-family = "FiraCode Nerd Font"
+font-size = 15
+
+# Shell integration features
+shell-integration-features = "no-cursor,no-sudo,title"
+
+# Enable Option key as Alt key
+macos-option-as-alt = true
