@@ -21,19 +21,12 @@ Welcome to my `.dotfiles` repository — a minimal yet powerful setup for a mode
 ## 1️⃣ Prerequisites
 
 ```bash
-
-```
-
 brew install zsh neovim tmux alacritty git
-
-```
-
 ```
 
 ## Clone the Repository
 
 ```bash
-
 git clone https://github.com/your-username/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ```
