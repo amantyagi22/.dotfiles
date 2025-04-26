@@ -1,56 +1,31 @@
-# Dotfiles
-This repository contains my personal configuration files (dotfiles) for setting up a productive development environment on **macOS**. These configurations help streamline workflows, improve efficiency and ensure consistency across different setups.
+# ⚙️ Aman’s Dotfiles
 
+Welcome to my `.dotfiles` repository — a minimal yet powerful setup for a modern terminal-based development environment. This configuration is designed to be portable, easily installable, and focused on speed, clarity, and productivity.
 
-## 🚀 Features
-- Pre-configured environment for coding and productivity.
-- Automated setup using Homebrew.
-- Modular and easily customizable dotfiles.
+---
 
+## 📦 Included Configurations
 
-## 📦 Packages Used
-The following packages are being used by this configuration and will be installed via Homebrew.
-- `nvim` - Modern Vim-based text editor.
-- `tmux` - Terminal multiplexer.
-- `starship` - Minimal, fast, and customizable prompt.
-- `alacritty` - GPU-accelerated terminal emulator.
-- `aerospace` -  i3-like tiling window manager for macOS
+| Tool          | Purpose                                   |
+| ------------- | ----------------------------------------- |
+| **Alacritty** | Fast GPU-accelerated terminal emulator    |
+| **Neovim**    | Next-gen Vim with plugin support          |
+| **Zsh**       | Shell configuration with themes & aliases |
+| **Tmux**      | Terminal multiplexer with custom bindings |
+| **Aerospace** | Lightweight and minimalist TUI/status bar |
 
+---
 
-## 📥 Installation
-To set up these dotfiles on your macOS system, you can clone the repository and run the installation script:
+## 🗂️ Folder Structure
+
+```bash
+~/.dotfiles
+├── .config/
+│   ├── alacritty/
+│   ├── nvim/
+│   └── zsh/
+├── .tmux.conf
+├── .aerospace.toml
+└── .zshrc
+
 ```
-# Clone the repository
-git clone https://github.com/dotfiles.git ~/.dotfiles
-
-# Run the setup script
-cd ~/.dotfiles
-./install.sh
-```
-
-
-## 🎨 Customization
-These dotfiles are modular, meaning you can tweak or extend them based on your workflow. Feel free to fork or modify them to suit your needs. You can add custom settings by modifying the respective configuration files in `~/.dotfiles/`.
-
-
-## 🛠️ Troubleshooting
-NOTE: This repo assumes that your system is using zsh
-If the installation script fails for any reason, you can manually install the necessary packages and set up the configurations:
-```
-brew install neovim tmux starship alacritty aerospace
-```
-
-Then, manually link the configuration files as shown below.
-```
-ln -sf ~/.dotfiles/tmux ~/.config/tmux
-ln -sf ~/.dotfiles/alacritty ~/.config/alacritty
-ln -sf ~/.dotfiles/starship.toml ~/.config/starship.toml
-ln -sf ~/.dotfiles/nvim ~/.config/nvim
-ln -sf ~/.dotfiles/.zprofile ~/.zprofile
-ln -sf ~/.dotfiles/zsh ~/.config/zsh
-ln -sf ~/.dotfiles/aerospace.toml ~/.config/aerospace.toml
-```
-
-
-## 📜 License
-Feel free to use and modify these dotfiles. However, if you find them useful, a shoutout would be appreciated! 🚀
