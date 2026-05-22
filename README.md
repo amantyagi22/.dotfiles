@@ -24,7 +24,7 @@ Portable, symlink-based dotfiles for a modern **macOS** terminal dev environment
 ### 1️⃣ Install Prerequisites
 
 ```bash
-brew install zsh neovim tmux alacritty git
+brew install zsh neovim tmux alacritty git fzf
 ```
 
 ### 2️⃣ Clone & Install
@@ -48,6 +48,12 @@ brew install nikitabobko/tap/aerospace
 
 # Ghostty terminal
 brew install --cask ghostty
+
+# Nerd Fonts (for Alacritty/Ghostty)
+brew install --cask font-meslo-lg-nerd-font font-fira-code-nerd-font
+
+# Neovim tooling helpers (recommended)
+brew install ripgrep fd node go
 ```
 
 ---
@@ -66,6 +72,21 @@ theme tokyo-night
 
 ---
 
+## 🧩 Dependencies by Feature
+
+| Feature | Required packages |
+| ------- | ----------------- |
+| Core shell | `zsh`, `git` |
+| Terminal (Alacritty) | `alacritty`, `font-meslo-lg-nerd-font` |
+| Terminal (Ghostty) | `ghostty`, `font-fira-code-nerd-font` |
+| Tmux | `tmux` |
+| Tmux sessionizer | `tmux`, `fzf` |
+| Neovim (base) | `neovim` |
+| Neovim extras | `ripgrep`, `fd`, `node`, `go` |
+| AeroSpace | `aerospace` |
+
+---
+
 ## 🔧 Custom Scripts
 
 | Script | What it does |
@@ -73,7 +94,11 @@ theme tokyo-night
 | `~/.local/bin/theme` | Switches tmux status bar + Ghostty colors + Neovim colorscheme simultaneously |
 | `~/.local/bin/tmux-sessionizer` | `fzf`-powered project switcher — fuzzy-find dirs, create/attach tmux sessions, launch dev commands (`npm run dev`, `mongosh`, `lazygit`, etc.) |
 
-Make sure `~/.local/bin` is on your `PATH` (the `.zshrc` already adds it).
+Make sure `~/.local/bin` is on your `PATH` (add this to `~/.zshrc` if missing):
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
 
 ---
 
