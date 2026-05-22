@@ -1,0 +1,93 @@
+#!/bin/zsh
+set -euo pipefail
+
+THEMES=(rose-pine gruvbox-material catppuccin tokyo-night dracula kanagawa nord night-owl)
+TMUX_THEMES_DIR="$HOME/.config/tmux/themes"
+TMUX_CURRENT="$HOME/.config/tmux/current-theme.conf"
+GHOSTTY_CONFIG="$HOME/.config/ghostty/config"
+NVIM_COLORSCHEME="$HOME/.config/nvim/lua/plugins/colorscheme.lua"
+
+ghostty_name() {
+  case "$1" in
+    rose-pine)        echo "rose-pine" ;;
+    gruvbox-material) echo "Gruvbox Dark" ;;
+    catppuccin)       echo "Catppuccin Mocha" ;;
+    tokyo-night)      echo "TokyoNight Night" ;;
+    dracula)          echo "Dracula" ;;
+    kanagawa)         echo "Kanagawa Wave" ;;
+    nord)             echo "Nord" ;;
+    night-owl)        echo "Night Owl" ;;
+  esac
+}
+
+nvim_name() {
+  case "$1" in
+    rose-pine)        echo "rose-pine" ;;
+    gruvbox-material) echo "gruvbox-material" ;;
+    catppuccin)       echo "catppuccin" ;;
+    tokyo-night)      echo "tokyonight" ;;
+    dracula)          echo "dracula" ;;
+    kanagawa)         echo "kanagawa" ;;
+    nord)             echo "nord" ;;
+    night-owl)        echo "night-owl" ;;
+  esac
+}
+
+usage() {
+  echo "Usage: theme <name>"
+  echo ""
+  echo "Available themes:"
+  for t in "${THEMES[@]}"; do
+    printf "  %s\n" "$t"
+  done
+  echo ""
+  echo "Ghostty theme names are from: ghostty +list-themes"
+  exit 1
+}
+
+[[ $# -eq 0 ]] && usage
+
+THEME="$1"
+
+# Validate
+valid=0
+for t in "${THEMES[@]}"; do
+  [[ "$t" == "$THEME" ]] && valid=1 && break
+done
+[[ $valid -eq 0 ]] && echo "Unknown theme: $THEME" && usage
+
+# --- tmux ---
+cp "$TMUX_THEMES_DIR/$THEME.conf" "$TMUX_CURRENT"
+if tmux info &>/dev/null 2>&1; then
+  tmux source-file "$HOME/.tmux.conf"
+  echo "tmux:    reloaded"
+else
+  echo "tmux:    updated (no active session)"
+fi
+
+# --- ghostty ---
+GHOSTTY_THEME="$(ghostty_name "$THEME")"
+sed -i '' "s/^theme = .*/theme = $GHOSTTY_THEME/" "$GHOSTTY_CONFIG"
+echo "ghostty: theme = $GHOSTTY_THEME  (press Cmd+Shift+, or restart Ghostty to apply)"
+
+# --- neovim ---
+NVIM_THEME="$(nvim_name "$THEME")"
+sed -i '' "s/^local THEME = \"[^\"]*\"/local THEME = \"$NVIM_THEME\"/" "$NVIM_COLORSCHEME"
+echo "nvim:    colorscheme = $NVIM_THEME"
+
+# Warn if this is a new plugin not yet installed
+NEW_PLUGINS=(catppuccin tokyonight dracula kanagawa nord night-owl)
+needs_install=0
+for p in "${NEW_PLUGINS[@]}"; do
+  [[ "$NVIM_THEME" == "$p" ]] && needs_install=1 && break
+done
+if [[ $needs_install -eq 1 ]]; then
+  LAZY_LOCK="$HOME/.config/nvim/lazy-lock.json"
+  if [[ -f "$LAZY_LOCK" ]] && ! grep -q "\"$NVIM_THEME\"" "$LAZY_LOCK"; then
+    echo ""
+    echo "  '$NVIM_THEME' is new — open nvim and run :Lazy install"
+  fi
+fi
+
+echo ""
+echo "Active theme: $THEME"

@@ -2,3 +2,8 @@ nvim/lazy-lock.json
 zsh/.zsh_history
 zsh/.zcompdump
 zsh/.zsh_sessions
+
+# Environment files
+.env
+*.env
+.envrc

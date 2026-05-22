@@ -34,11 +34,19 @@ link_file() {
 link_file "$DOTFILES_DIR/.config/alacritty" "$HOME/.config/alacritty"
 link_file "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
 link_file "$DOTFILES_DIR/.config/zsh" "$HOME/.config/zsh"
+link_file "$DOTFILES_DIR/.config/tmux/themes" "$HOME/.config/tmux/themes"
+link_file "$DOTFILES_DIR/.config/tmux-sessionizer" "$HOME/.config/tmux-sessionizer"
+link_file "$DOTFILES_DIR/.config/ghostty" "$HOME/.config/ghostty"
 
 # Link individual dotfiles
 link_file "$DOTFILES_DIR/.tmux.conf" "$HOME/.tmux.conf"
+link_file "$DOTFILES_DIR/.config/tmux/current-theme.conf" "$HOME/.config/tmux/current-theme.conf"
 link_file "$DOTFILES_DIR/.aerospace.toml" "$HOME/.aerospace.toml"
 link_file "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
+
+# Link scripts (ensure ~/.local/bin is in PATH)
+link_file "$DOTFILES_DIR/.local/bin/tmux-sessionizer" "$HOME/.local/bin/tmux-sessionizer"
+link_file "$DOTFILES_DIR/.local/bin/theme" "$HOME/.local/bin/theme"
 
 echo "Dotfiles installation complete!"
 echo "Any existing files were backed up to $BACKUP_DIR"

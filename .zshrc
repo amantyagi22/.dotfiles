@@ -108,3 +108,6 @@ alias legacy="cd /Users/home/Developer/legacy"
 alias personal="cd /Users/home/Developer/personal"
 alias staging="ssh Aman@jump-aws-staging.playo.io"
 alias prod="ssh Aman@jump-aws.playo.io"
+
+# opencode
+export PATH=/Users/home/.opencode/bin:$PATH
