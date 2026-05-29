@@ -1,0 +1,130 @@
+#!/bin/bash
+PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
+
+# ─── Bar: fully transparent ───────────────────────────────
+sketchybar --bar height=24                \
+                 position=bottom          \
+                 padding_left=6           \
+                 padding_right=6          \
+                 color=0xff0f1117         \
+                 border_width=0           \
+                 corner_radius=0          \
+                 sticky=on                \
+                 blur_radius=0            \
+                 notch_width=0
+
+# ─── Global defaults ─────────────────────────────────────
+sketchybar --default updates=when_shown                          \
+                     icon.font="GeistMono Nerd Font:SemiBold:15.0" \
+                     icon.color=0xffe1e3e4                       \
+                     label.font="GeistMono Nerd Font:SemiBold:15.0" \
+                     label.color=0xffe1e3e4                      \
+                     padding_left=0                              \
+                     padding_right=0                             \
+                     icon.padding_left=4                         \
+                     icon.padding_right=2                        \
+                     label.padding_left=2                        \
+                     label.padding_right=4                       \
+                     background.drawing=off
+
+# ─── Custom events ────────────────────────────────────────
+sketchybar --add event aerospace_workspace_change
+sketchybar --add event window_focus
+
+# ─── Left: workspace numbers ─────────────────────────────
+SPACE_NAMES=()
+for sid in 1 2 3 4 5 6 7 8 9 10; do
+    sketchybar --add item space.$sid left                                     \
+               --subscribe space.$sid aerospace_workspace_change window_focus \
+               --set space.$sid                                               \
+                    icon.drawing=off                                          \
+                    label.font="GeistMono Nerd Font:SemiBold:15.0"           \
+                    label.align=center                                        \
+                    label.width=20                                            \
+                    label.padding_left=0                                      \
+                    label.padding_right=0                                     \
+                    padding_left=2                                            \
+                    padding_right=2                                           \
+                    background.drawing=on                                     \
+                    background.color=0x00000000                               \
+                    background.border_color=0x66e1e3e4                        \
+                    background.border_width=1                                 \
+                    background.corner_radius=0                                \
+                    background.height=16                                      \
+                    click_script="aerospace workspace $sid"                   \
+                    script="$PLUGIN_DIR/aerospace.sh $sid"
+    SPACE_NAMES+=("space.$sid")
+done
+
+# clean up stale items
+for sid in 1 2 3 4 5 6 7 8 9 10; do
+    sketchybar --remove space_dots.$sid 2>/dev/null
+    sketchybar --remove space_focus.$sid 2>/dev/null
+done
+
+
+# ─── Right: separators + widgets ─────────────────────────
+
+add_sep() {
+    sketchybar --add item "$1" right \
+               --set "$1" icon.drawing=off \
+                           label="|" \
+                           label.color=0x66e1e3e4 \
+                           label.font="GeistMono Nerd Font:Regular:15.0" \
+                           padding_left=0 \
+                           padding_right=0 \
+                           label.padding_left=2 \
+                           label.padding_right=2
+}
+
+# rightmost item first → clock on far right
+sketchybar --add item clock right               \
+           --set clock update_freq=1           \
+                       icon.drawing=off         \
+                       label.color=0xffe1e3e4   \
+                       padding_left=0           \
+                       padding_right=0          \
+                       script="$PLUGIN_DIR/clock.sh"
+
+add_sep sep5
+
+sketchybar --add item memory right              \
+           --set memory update_freq=5           \
+                        padding_left=0          \
+                        padding_right=0         \
+                        script="$PLUGIN_DIR/memory.sh" \
+                        click_script="open -a 'Activity Monitor'"
+
+add_sep sep3
+
+sketchybar --add item battery right             \
+           --set battery update_freq=60         \
+                         padding_left=0         \
+                         padding_right=0        \
+                         script="$PLUGIN_DIR/battery.sh" \
+                         click_script="open /System/Library/PreferencePanes/Battery.prefPane" \
+           --subscribe battery system_woke power_source_change
+
+add_sep sep2
+
+sketchybar --add item wifi right                \
+           --set wifi update_freq=30            \
+                      padding_left=0            \
+                      padding_right=0           \
+                      script="$PLUGIN_DIR/wifi.sh" \
+                      click_script="open /System/Library/PreferencePanes/Network.prefPane" \
+           --subscribe wifi wifi_change
+
+add_sep sep1
+
+sketchybar --add item volume right              \
+           --set volume update_freq=2           \
+                        padding_left=0          \
+                        padding_right=0         \
+                        script="$PLUGIN_DIR/volume.sh" \
+                        click_script="open /System/Library/PreferencePanes/Sound.prefPane" \
+           --subscribe volume volume_change
+
+
+# ─── Force initial draw ───────────────────────────────────
+sketchybar --update
