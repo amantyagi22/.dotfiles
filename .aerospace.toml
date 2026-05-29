@@ -1,54 +1,125 @@
-# i3 doesn't have "normalizations" feature that why we disable them here.
-# But the feature is very helpful.
-# Normalizations eliminate all sorts of weird tree configurations that don't make sense.
-# Give normalizations a chance and enable them back.
-enable-normalization-flatten-containers = false
-enable-normalization-opposite-orientation-for-nested-containers = false
+# AeroSpace config — single monitor, dev-focused layout
+# Docs: https://nikitabobko.github.io/AeroSpace/guide
 
-# Mouse follows focus when focused monitor changes
+# Start AeroSpace at login
+start-at-login = true
+
+# Normalizations: keep ON (cleans up weird tree states automatically)
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# Mouse follows focus when monitor changes (no-op on single monitor, harmless)
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+on-focus-changed = ['move-mouse window-lazy-center']
 
+# Default root layout: tiles, accordion is opt-in per-workspace
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# Run JankyBorders + SketchyBar once on AeroSpace startup
+after-startup-command = [
+    'exec-and-forget /opt/homebrew/bin/borders config=~/.config/borders/bordersrc',
+    'exec-and-forget /opt/homebrew/bin/sketchybar'
+]
+
+# Notify SketchyBar when AeroSpace switches workspaces or focus changes
+exec-on-workspace-change = ['/bin/bash', '-c',
+    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE; sketchybar --trigger window_focus'
+]
+
+[exec]
+    inherit-env-vars = true
+[exec.env-vars]
+    PATH = '/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH}'
+
+# Gaps — breathing room between windows and screen edges
+[gaps]
+    inner.horizontal = 3
+    inner.vertical   = 3
+    outer.left       = 3
+    outer.bottom     = 28
+    outer.top        = 3
+    outer.right      = 3
+
+# ─────────────────────────────────────────────────────────
+# App → workspace assignment (and float rules)
+# ─────────────────────────────────────────────────────────
+[[on-window-detected]]
+if.app-id = 'company.thebrowser.Browser'   # Arc
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'        # Ghostty
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.mongodb.compass'          # MongoDB Compass
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-id = 'com.mongodb.compass.beta'     # Compass Beta (covers either build)
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'    # Slack
+run = 'move-node-to-workspace 4'
+
+# Slack call windows (huddle / Slack call) → workspace 10, floating
+# Note: move-node-to-workspace must be LAST in the list
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+if.window-title-regex-substring = '(?i)(huddle|call|meeting)'
+run = ['layout floating', 'move-node-to-workspace 10']
+
+[[on-window-detected]]
+if.app-id = 'com.insomnia.app'             # Insomnia
+run = 'move-node-to-workspace 9'
+
+# Float common system/utility apps (they don't tile well)
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+if.window-title-regex-substring = '(?i)(copy|move|info|preferences)'
+run = 'layout floating'
+
+# ─────────────────────────────────────────────────────────
+# MAIN mode — your daily keybindings
+# Convention: alt = focus/navigate, alt-shift = move/act
+# ─────────────────────────────────────────────────────────
 [mode.main.binding]
-    # See: https://nikitabobko.github.io/AeroSpace/goodies#open-a-new-window-with-applescript
-    alt-enter = '''exec-and-forget osascript -e '
-    tell application "Terminal"
-        do script
-        activate
-    end tell'
-    '''
+    # Launch terminal (Ghostty)
+    alt-enter = 'exec-and-forget open -na Ghostty'
 
-    # i3 wraps focus by default
-    alt-j =         'focus --boundaries-action wrap-around-the-workspace left'
-    alt-k =         'focus --boundaries-action wrap-around-the-workspace down'
-    alt-l =         'focus --boundaries-action wrap-around-the-workspace up'
+    # Focus (hjkl-ish, with semicolon for right since l is taken)
+    # Using j/k/l/; matches the i3 vim-style starter
+    alt-j         = 'focus --boundaries-action wrap-around-the-workspace left'
+    alt-k         = 'focus --boundaries-action wrap-around-the-workspace down'
+    alt-l         = 'focus --boundaries-action wrap-around-the-workspace up'
     alt-semicolon = 'focus --boundaries-action wrap-around-the-workspace right'
 
-    alt-shift-j = 'move left'
-    alt-shift-k = 'move down'
-    alt-shift-l = 'move up'
+    # Toggle to the other window (cycles all windows; with 2, just flips between them)
+    alt-o       = 'focus dfs-next --boundaries-action wrap-around-the-workspace'
+    alt-shift-o = 'focus dfs-prev --boundaries-action wrap-around-the-workspace'
+
+    # Move window in direction
+    alt-shift-j         = 'move left'
+    alt-shift-k         = 'move down'
+    alt-shift-l         = 'move up'
     alt-shift-semicolon = 'move right'
 
-    # Consider using 'join-with' command as a 'split' replacement if you want to enable
-    # normalizations
-    alt-h = 'split horizontal'
-    alt-v = 'split vertical'
+    # (Join-with bindings are in service mode — see [mode.service.binding])
 
+    # Layouts
     alt-f = 'fullscreen'
+    alt-s = 'layout v_accordion'           # stacked
+    alt-w = 'layout h_accordion'           # tabbed
+    alt-e = 'layout tiles horizontal vertical'  # toggle tile direction
+    alt-shift-space = 'layout floating tiling'   # toggle float
 
-    alt-s = 'layout v_accordion' # 'layout stacking' in i3
-    alt-w = 'layout h_accordion' # 'layout tabbed' in i3
-    alt-e = 'layout tiles horizontal vertical' # 'layout toggle split' in i3
-
-    alt-shift-space = 'layout floating tiling' # 'floating toggle' in i3
-
-    # Not supported, because this command is redundant in AeroSpace mental model.
-    # See: https://nikitabobko.github.io/AeroSpace/guide#floating-windows
-    #alt-space = 'focus toggle_tiling_floating'
-
-    # `focus parent`/`focus child` are not yet supported, and it's not clear whether they
-    # should be supported at all https://github.com/nikitabobko/AeroSpace/issues/5
-    # alt-a = 'focus parent'
-
+    # Workspaces
     alt-1 = 'workspace 1'
     alt-2 = 'workspace 2'
     alt-3 = 'workspace 3'
@@ -60,6 +131,7 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
     alt-9 = 'workspace 9'
     alt-0 = 'workspace 10'
 
+    # Send window to workspace
     alt-shift-1 = 'move-node-to-workspace 1'
     alt-shift-2 = 'move-node-to-workspace 2'
     alt-shift-3 = 'move-node-to-workspace 3'
@@ -71,14 +143,48 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
     alt-shift-9 = 'move-node-to-workspace 9'
     alt-shift-0 = 'move-node-to-workspace 10'
 
+    # Jump back to previously focused workspace
+    alt-tab = 'workspace-back-and-forth'
+
+    # Move whole workspace between monitors (useful if you ever add an external)
+    alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+    # Reload config
     alt-shift-c = 'reload-config'
 
+    # Toggle sketchybar theme (i3 ↔ icons)
+    alt-shift-t = 'exec-and-forget /opt/homebrew/bin/sketchybar-toggle'
+
+    # Enter resize mode (then use h/j/k/l to resize, enter/esc to exit)
     alt-r = 'mode resize'
 
+    # Enter service mode (less-common actions — see [mode.service.binding] below)
+    alt-shift-s = 'mode service'
+
+# ─────────────────────────────────────────────────────────
+# RESIZE mode — alt-r to enter, h/j/k/l to resize, enter/esc to exit
+# ─────────────────────────────────────────────────────────
 [mode.resize.binding]
-    h = 'resize width -50'
-    j = 'resize height +50'
-    k = 'resize height -50'
-    l = 'resize width +50'
+    h     = 'resize width  -50'
+    j     = 'resize height +50'
+    k     = 'resize height -50'
+    l     = 'resize width  +50'
+    minus = 'resize smart -50'
+    equal = 'resize smart +50'
     enter = 'mode main'
-    esc = 'mode main'
+    esc   = 'mode main'
+
+# ─────────────────────────────────────────────────────────
+# SERVICE mode — alt-shift-s to enter, then one key, then auto-exits
+# Like a "leader key" for less-common actions
+# ─────────────────────────────────────────────────────────
+[mode.service.binding]
+    esc          = ['reload-config', 'mode main']
+    r            = ['flatten-workspace-tree', 'mode main']  # reset layout
+    f            = ['layout floating tiling', 'mode main']  # toggle float
+    backspace    = ['close-all-windows-but-current', 'mode main']
+    # Join with neighbor (replaces 'split' when normalizations are on)
+    alt-shift-h  = ['join-with left',  'mode main']
+    alt-shift-j  = ['join-with down',  'mode main']
+    alt-shift-k  = ['join-with up',    'mode main']
+    alt-shift-l  = ['join-with right', 'mode main']
