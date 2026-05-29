@@ -13,7 +13,8 @@ Portable, symlink-based dotfiles for a modern **macOS** terminal dev environment
 | **Neovim** | `.config/nvim/` | LazyVim distro + Copilot, Harpoon, Telescope, Prettier, ESLint, Go/TS |
 | **Alacritty** | `.config/alacritty/` | GPU-accelerated terminal — MesloLGS Nerd Font, 6 themes |
 | **Ghostty** | `.config/ghostty/` | GPU-accelerated terminal (alt.) — FiraCode Nerd Font, 80% opacity |
-| **AeroSpace** | `.aerospace.toml` | i3-style tiling WM for macOS — 10 workspaces, resize mode |
+| **AeroSpace** | `.aerospace.toml` | i3-style tiling WM for macOS — 10 workspaces, resize/service modes, gaps |
+| **SketchyBar** | `.config/sketchybar/` | Custom macOS status bar — AeroSpace workspaces, battery, wifi, volume, memory, clock |
 | **tmux-sessionizer** | `.local/bin/` | Fuzzy-find projects, create/attach tmux sessions with dev commands |
 | **theme** | `.local/bin/` | One-command theme switcher — updates tmux + Ghostty + Neovim |
 
@@ -45,6 +46,9 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 # AeroSpace tiling WM
 brew install nikitabobko/tap/aerospace
+
+# SketchyBar status bar (+ JankyBorders for window borders)
+brew install FelixKratz/formulae/sketchybar FelixKratz/formulae/borders
 
 # Ghostty terminal
 brew install --cask ghostty
@@ -84,6 +88,7 @@ theme tokyo-night
 | Neovim (base) | `neovim` |
 | Neovim extras | `ripgrep`, `fd`, `node`, `go` |
 | AeroSpace | `aerospace` |
+| SketchyBar | `sketchybar`, `borders` |
 
 ---
 
@@ -128,6 +133,10 @@ export PATH="$HOME/.local/bin:$PATH"
 │   │   └── themes/                     # 8 tmux status bar themes
 │   ├── tmux-sessionizer/
 │   │   └── tmux-sessionizer.conf       # Search paths & session commands
+│   ├── sketchybar/
+│   │   ├── sketchybarrc                # Status bar entry point
+│   │   ├── toggle-theme.sh             # Light/dark bar toggle
+│   │   └── plugins/                    # aerospace, battery, wifi, volume, memory, clock
 │   └── zsh/
 │       ├── .zshrc                      # Alt zshrc (for ZDOTDIR setups)
 │       └── ohmyzsh/                    # Vendored Oh My Zsh
@@ -156,11 +165,18 @@ export PATH="$HOME/.local/bin:$PATH"
 
 | Binding | Action |
 | ------- | ------ |
-| `alt-⏎` | Open terminal |
-| `alt-j/k/l/;` | Focus left/down/up/right |
+| `alt-⏎` | Open terminal (Ghostty) |
+| `alt-j/k/l/;` | Focus left/down/up/right (wraps) |
 | `alt-⇧-j/k/l/;` | Move window |
-| `alt-h/v` | Split horizontal/vertical |
+| `alt-o` / `alt-⇧-o` | Focus next/prev window |
 | `alt-f` | Fullscreen |
+| `alt-s` / `alt-w` | Stacked / tabbed layout |
+| `alt-e` | Toggle tile direction |
+| `alt-⇧-space` | Toggle floating |
 | `alt-1..0` | Switch workspace |
 | `alt-⇧-1..0` | Move window to workspace |
-| `alt-r` | Resize mode (h/j/k/l) |
+| `alt-tab` | Last workspace |
+| `alt-⇧-t` | Toggle SketchyBar |
+| `alt-⇧-c` | Reload config |
+| `alt-r` | Resize mode (h/j/k/l, ⏎/esc to exit) |
+| `alt-⇧-s` | Service mode (join-with, reset, close-others) |
