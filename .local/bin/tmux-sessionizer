@@ -133,12 +133,16 @@ sanity_check() {
 }
 
 switch_to() {
-    if [[ -z $TMUX ]]; then
+    # Env vars ($TMUX / $TMUX_PANE) can leak into a bare shell, so they don't
+    # reliably tell us whether THIS terminal is an attached tmux client.
+    # Instead, try switch-client first; if it fails (we're not a real client),
+    # fall back to attach. Covers: inside tmux -> switch; bare shell -> attach;
+    # leaked $TMUX in a bare shell -> switch fails -> attach.
+    if [[ -n $TMUX ]] && tmux switch-client -t "$1" 2>/dev/null; then
+        log "switched to session $1"
+    else
         log "attaching to session $1"
         tmux attach-session -t "$1"
-    else
-        log "switching to session $1"
-        tmux switch-client -t "$1"
     fi
 }
 

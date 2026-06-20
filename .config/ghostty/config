@@ -1,22 +1,52 @@
+# env
+env = TERM=xterm-256color
+env = COLORTERM=truecolor
 
-term = "xterm-256color"
+# scrollback limit in bytes
+scrollback-limit = 1000000
 
-# theme = rose-pine
+# font
+# font-family = "MesloLGM Nerd Font Mono"
+# font-family-bold = "MesloLGM Nerd Font Mono Bold"
+# font-family-italic = "MesloLGM Nerd Font Mono Italic"
+# font-family-bold-italic = "MesloLGM Nerd Font Mono Bold Italic"
+font-size = 26
+font-thicken = true
 
-# Background settings
-background = "#141414"
-background-opacity = 0.8
-background-blur = true
 
-# Foreground color
-foreground = "#d8d8d8"
+# window dimensions (cells)
+window-width = 208
+window-height = 46
 
-# Font settings
-font-family = "FiraCode Nerd Font"
-font-size = 15
+# padding (pixels)
+window-padding-x = 7
+window-padding-y = 3
 
-# Shell integration features
-shell-integration-features = "no-cursor,no-sudo,title"
+# window decoration options: auto | client | server | none
+window-decoration = auto
 
-# Enable Option key as Alt key
+# macOS titlebar: rounded corners on, titlebar text hidden
+macos-titlebar-style = hidden
+
+# macOS Option-as-Alt: true | false | left | right
 macos-option-as-alt = true
+
+# window-state: default | never | always
+window-save-state = never
+
+# cursor style: bar | block | underline | block_hollow
+cursor-style = block
+# blink: true | false | null
+cursor-style-blink = true
+
+# background opacity in range 0.0 - 1.0
+# background-opacity = 0.9
+# background-blur = true
+
+theme = Rose Pine
+
+# Ctrl+F: trigger tmux-sessionizer (fzf folder picker -> tmux session).
+# Sends the command + Enter to the running shell. The \x0c (Ctrl+L / clear)
+# keeps the line clean; the script itself handles in/out of tmux.
+keybind = ctrl+f=text:\x15tmux-sessionizer\r
+

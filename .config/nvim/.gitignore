@@ -6,3 +6,6 @@ debug
 foo.*
 *.log
 data
+
+# Vendored third-party plugins (installed locally, not tracked)
+pack/

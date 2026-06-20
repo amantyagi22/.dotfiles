@@ -1,13 +1,48 @@
-# Colors (Gruvbox Material Medium Dark)
-
-# Default colors
+# Enhanced Gruvbox Material colors matching your Neovim theme
 [colors.primary]
-background = '#282828'
+background = '#1d2021'  # Darker background to match hard variant
 foreground = '#d4be98'
+dim_foreground = '#a89984'
+
+[colors.cursor]
+text = '#1d2021'
+cursor = '#d4be98'
+
+[colors.vi_mode_cursor]
+text = '#1d2021'
+cursor = '#a9b665'
+
+[colors.selection]
+text = '#1d2021'
+background = '#d4be98'
+
+[colors.search.matches]
+foreground = '#1d2021'
+background = '#d8a657'
+
+[colors.search.focused_match]
+foreground = '#1d2021'
+background = '#a9b665'
+
+[colors.footer_bar]
+foreground = '#d4be98'
+background = '#32302f'
+
+[colors.hints.start]
+foreground = '#1d2021'
+background = '#d8a657'
+
+[colors.hints.end]
+foreground = '#1d2021'
+background = '#a89984'
+
+[colors.line_indicator]
+foreground = 'None'
+background = 'None'
 
 # Normal colors
 [colors.normal]
-black   = '#3c3836'
+black   = '#32302f'  # Slightly lighter for better contrast
 red     = '#ea6962'
 green   = '#a9b665'
 yellow  = '#d8a657'
@@ -16,13 +51,24 @@ magenta = '#d3869b'
 cyan    = '#89b482'
 white   = '#d4be98'
 
-# Bright colors (same as normal colors)
+# Bright colors with enhanced contrast
 [colors.bright]
-black   = '#3c3836'
+black   = '#5a524c'  # More distinct bright black
 red     = '#ea6962'
 green   = '#a9b665'
-yellow  = '#d8a657'
+yellow  = '#e78a4e'  # Slightly more vibrant yellow
 blue    = '#7daea3'
 magenta = '#d3869b'
 cyan    = '#89b482'
-white   = '#d4be98'
+white   = '#fbf1c7'  # Brighter white for better contrast
+
+# Dim colors for better visual hierarchy
+[colors.dim]
+black   = '#1d2021'
+red     = '#b85651'
+green   = '#8f9a52'
+yellow  = '#c18f41'
+blue    = '#68948a'
+magenta = '#b16286'
+cyan    = '#72966c'
+white   = '#a89984'
