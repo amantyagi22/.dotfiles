@@ -1,5 +1,6 @@
 [env]
 TERM = "xterm-256color"
+COLORTERM = "truecolor"
 
 [scrolling]
 history = 10000
@@ -26,28 +27,22 @@ y = 0
 decorations = "Buttonless"
 dynamic_padding = false
 startup_mode = "Windowed"
-
 dimensions.columns = 208
 dimensions.lines = 46
-
 padding.x = 7
 padding.y = 3
-
-
- # opacity = 0.8
- # blur = true
-
+# opacity = 0.4
+# blur = true
 option_as_alt = "Both"
 
 [cursor]
-blink_interval = 500  # Optional, default is 750ms
+blink_interval = 500
 unfocused_hollow = true
 
 [cursor.style]
-shape = "Block"        # Options: "Block", "Underline", "Beam"
-blinking = "Always"    # Options: "Never", "Off", "On", "Always"
-
+shape = "Block"
+blinking = "Always"
 
 [general]
 live_config_reload = true
- import  = [ "~/.config/alacritty/themes/gruvbox-material-medium.toml" ]
+import = [ "~/.config/alacritty/themes/rose-pine.toml" ]

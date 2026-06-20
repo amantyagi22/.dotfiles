@@ -16,15 +16,9 @@ on-focus-changed = ['move-mouse window-lazy-center']
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
 
-# Run JankyBorders + SketchyBar once on AeroSpace startup
+# Run JankyBorders once on AeroSpace startup
 after-startup-command = [
-    'exec-and-forget /opt/homebrew/bin/borders config=~/.config/borders/bordersrc',
-    'exec-and-forget /opt/homebrew/bin/sketchybar'
-]
-
-# Notify SketchyBar when AeroSpace switches workspaces or focus changes
-exec-on-workspace-change = ['/bin/bash', '-c',
-    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE; sketchybar --trigger window_focus'
+    'exec-and-forget /opt/homebrew/bin/borders config=~/.config/borders/bordersrc'
 ]
 
 [exec]
@@ -37,9 +31,9 @@ exec-on-workspace-change = ['/bin/bash', '-c',
     inner.horizontal = 3
     inner.vertical   = 3
     outer.left       = 3
-    outer.bottom     = 28
-    outer.top        = 3
+    outer.bottom     = 3
     outer.right      = 3
+    outer.top        = 3   # small gap so the JankyBorders top edge clears the menu bar (matches other gaps)
 
 # ─────────────────────────────────────────────────────────
 # App → workspace assignment (and float rules)
@@ -101,8 +95,7 @@ run = 'layout floating'
     alt-semicolon = 'focus --boundaries-action wrap-around-the-workspace right'
 
     # Toggle to the other window (cycles all windows; with 2, just flips between them)
-    alt-o       = 'focus dfs-next --boundaries-action wrap-around-the-workspace'
-    alt-shift-o = 'focus dfs-prev --boundaries-action wrap-around-the-workspace'
+    alt-o       = 'focus-back-and-forth'
 
     # Move window in direction
     alt-shift-j         = 'move left'
@@ -151,9 +144,6 @@ run = 'layout floating'
 
     # Reload config
     alt-shift-c = 'reload-config'
-
-    # Toggle sketchybar theme (i3 ↔ icons)
-    alt-shift-t = 'exec-and-forget /opt/homebrew/bin/sketchybar-toggle'
 
     # Enter resize mode (then use h/j/k/l to resize, enter/esc to exit)
     alt-r = 'mode resize'

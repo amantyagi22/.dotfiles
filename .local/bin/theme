@@ -9,7 +9,7 @@ NVIM_COLORSCHEME="$HOME/.config/nvim/lua/plugins/colorscheme.lua"
 
 ghostty_name() {
   case "$1" in
-    rose-pine)        echo "rose-pine" ;;
+    rose-pine)        echo "Rose Pine" ;;
     gruvbox-material) echo "Gruvbox Dark" ;;
     catppuccin)       echo "Catppuccin Mocha" ;;
     tokyo-night)      echo "TokyoNight Night" ;;

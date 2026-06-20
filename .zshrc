@@ -70,7 +70,12 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+# Which plugins would you like to load?
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -106,8 +111,39 @@ alias vi="nvim"
 alias work="cd /Users/home/Developer/work"
 alias legacy="cd /Users/home/Developer/legacy"
 alias personal="cd /Users/home/Developer/personal"
-alias staging="ssh Aman@jump-aws-staging.playo.io"
-alias prod="ssh Aman@jump-aws.playo.io"
+alias lg="lazygit"
+alias ysl="yarn start:local"
+alias ysd="yarn start:dev"
+alias tit="git"
+alias ga="yarn lint:fix && git add"
+alias yss="yarn start:staging"
+alias bsl="bun run start:local"
 
-# opencode
-export PATH=/Users/home/.opencode/bin:$PATH
+# bun completions
+[ -s "/Users/home/.bun/_bun" ] && source "/Users/home/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Added by Windsurf
+export PATH="/Users/home/.codeium/windsurf/bin:$PATH"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
+
+# Added by Antigravity
+export PATH="/Users/home/.antigravity/antigravity/bin:$PATH"
+export PATH="$PATH:$HOME/.local/bin"
+
+alias jarvis="claude"
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"
+export PATH="$(python3 -m site --user-base)/bin:$PATH"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/home/.local/bin:$PATH"
+
+# Added by Antigravity IDE
+export PATH="/Users/home/.antigravity-ide/antigravity-ide/bin:$PATH"
